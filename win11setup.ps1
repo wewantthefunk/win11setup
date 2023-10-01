@@ -127,6 +127,18 @@ $CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Pe
 $CustomValueName = "AppsUseLightTheme"
 Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
 
+# Remove chat Icon
+
+$CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+$CustomValueName = "TaskbarMn"
+Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
+
+# Remove weather Icon
+
+$CustomRegistryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Dsh\AllowNewsAndInterests"
+$CustomValueName = "TaskbarMn"
+Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
+
 # Install Brave without launching it immediately
 Install-Executable -InstallerUrl "https://laptop-updates.brave.com/latest/winx64" -ExecutableName "brave" -RunNow:$false
 
