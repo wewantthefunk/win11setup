@@ -58,16 +58,8 @@ function Install-Executable {
 }
 
 function Unpin-AllTaskbarItems {
-    # Define the path to the TaskBar folder
-    $TaskBarFolder = [System.IO.Path]::Combine($env:APPDATA, "Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar")
-
-    # Get a list of all shortcut files in the TaskBar folder
-    $ShortcutFiles = Get-ChildItem -Path $TaskBarFolder -Filter *.lnk
-
-    # Loop through the shortcut files and remove them
-    foreach ($ShortcutFile in $ShortcutFiles) {
-        Remove-Item -Path $ShortcutFile.FullName -Force
-    }
+    Remove-Item -Path "$env:APPDATA\Microsoft\Internet Explorer\Quick Launch\User Pinned\Taskbar\*" -Force -Recurse
+    Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\TaskBand" -Name '*' -Force
 
     Write-Host "All pinned items have been removed from the taskbar."
 }
@@ -94,12 +86,11 @@ function Set-SoundScheme {
     }
 }
 
+# Remove all pinned items from taskbar
+Unpin-AllTaskbarItems
 
 # Call the function to disable system event sounds
 Set-SoundScheme -SchemeName ".None"
-
-# Call the function to unpin all taskbar items
-Unpin-AllTaskbarItems
 
 # Move the start menu to the left
 $CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
