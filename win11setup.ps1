@@ -147,8 +147,14 @@ Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName 
 # Turn off notification center
 
 $CustomRegistryPath = "HKCU:\Software\Policies\Microsoft\Windows\Explorer"
-$CustomValueName = "DisableNotificationCenter "
+$CustomValueName = "DisableNotificationCenter"
 Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 1
+
+# Turn off search highlights
+
+$CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings"
+$CustomValueName = "IsDynamicSearchBoxEnabled"
+Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
 
 # Install Brave without launching it immediately
 # Install-Executable -InstallerUrl "https://laptop-updates.brave.com/latest/winx64" -ExecutableName "brave" -RunNow:$false
