@@ -72,23 +72,31 @@ function Unpin-AllTaskbarItems {
     Write-Host "All pinned items have been removed from the taskbar."
 }
 
-function Disable-SystemEventSounds {
+function Set-SoundScheme {
+    param (
+        [string]$SchemeName
+    )
+
     # Define the registry path for the sound scheme settings
-    $soundSchemeRegistryPath = "HKCU:\AppEvents\Schemes\Apps\.Default"
+    $soundSchemesRegistryPath = "HKCU:\AppEvents\Schemes"
 
-    # Disable system event sounds by setting "(None)" for all events
-    $eventSounds = Get-Item -Path "$soundSchemeRegistryPath\*"
-    $eventSounds | ForEach-Object {
-        $eventPath = $_.PSChildName
-        Set-ItemProperty -Path "$soundSchemeRegistryPath\$eventPath" -Name "(Default)" -Value "(None)"
+    # Check if the specified sound scheme exists
+    if (Test-Path "$soundSchemesRegistryPath\$SchemeName") {
+        # Set the selected sound scheme as the current one
+        Set-ItemProperty -Path "HKCU:\AppEvents\Schemes" -Name ".Current" -Value "$SchemeName"
+
+        # Apply the changes to the sound scheme
+        [Microsoft.Win32.Registry]::CurrentUser.Flush()
+
+        Write-Host "Sound scheme set to: $SchemeName"
+    } else {
+        Write-Host "Error: Sound scheme '$SchemeName' not found."
     }
-
-    # Apply the changes to the sound scheme
-    [Microsoft.Win32.Registry]::CurrentUser.Flush()
 }
 
+
 # Call the function to disable system event sounds
-Disable-SystemEventSounds
+Set-SoundScheme -SchemeName "No Sounds"
 
 # Call the function to unpin all taskbar items
 Unpin-AllTaskbarItems
