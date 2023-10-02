@@ -78,12 +78,12 @@ function Set-SoundScheme {
     )
 
     # Define the registry path for the sound scheme settings
-    $soundSchemesRegistryPath = "HKCU:\AppEvents\Schemes"
+    $soundSchemesRegistryPath = "HKCU:\AppEvents\Schemes\Names"
 
     # Check if the specified sound scheme exists
     if (Test-Path "$soundSchemesRegistryPath\$SchemeName") {
         # Set the selected sound scheme as the current one
-        Set-ItemProperty -Path "HKCU:\AppEvents\Schemes" -Name ".Current" -Value "$SchemeName"
+        Set-ItemProperty -Path "HKCU:\AppEvents\Schemes" -Name "(Default)" -Value "$SchemeName"
 
         # Apply the changes to the sound scheme
         [Microsoft.Win32.Registry]::CurrentUser.Flush()
@@ -96,7 +96,7 @@ function Set-SoundScheme {
 
 
 # Call the function to disable system event sounds
-Set-SoundScheme -SchemeName "No Sounds"
+Set-SoundScheme -SchemeName ".None"
 
 # Call the function to unpin all taskbar items
 Unpin-AllTaskbarItems
