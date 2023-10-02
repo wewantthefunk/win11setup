@@ -75,7 +75,6 @@ function Unpin-AllTaskbarItems {
 # Call the function to unpin all taskbar items
 Unpin-AllTaskbarItems
 
-
 # Move the start menu to the left
 $CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
 $CustomValueName = "TaskbarAl"
@@ -139,6 +138,12 @@ $CustomRegistryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Dsh\AllowNewsAndInteres
 $CustomValueName = "TaskbarMn"
 Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
 
+# Remove widgets
+
+$CustomRegistryPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+$CustomValueName = "TaskbarDa"
+Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
+
 # Turn off notification center
 
 $CustomRegistryPath = "HKCU:\Software\Policies\Microsoft\Windows\Explorer"
@@ -146,13 +151,13 @@ $CustomValueName = "DisableNotificationCenter "
 Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 1
 
 # Install Brave without launching it immediately
-Install-Executable -InstallerUrl "https://laptop-updates.brave.com/latest/winx64" -ExecutableName "brave" -RunNow:$false
+# Install-Executable -InstallerUrl "https://laptop-updates.brave.com/latest/winx64" -ExecutableName "brave" -RunNow:$false
 
 # Define the URL for the Firefox installer
 $FirefoxInstallerUrl = "https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US"
 
 # Install Firefox without launching it immediately
-Install-Executable -InstallerUrl $FirefoxInstallerUrl -ExecutableName "firefox" -RunNow:$false
+# Install-Executable -InstallerUrl $FirefoxInstallerUrl -ExecutableName "firefox" -RunNow:$false
 
 # Define the URL for the VSCode installer (adjust the URL as needed)
 $VSCodeInstallerUrl = "https://vscode-update.azurewebsites.net/latest/win32-x64-user/stable"
@@ -161,5 +166,5 @@ $VSCodeInstallerUrl = "https://vscode-update.azurewebsites.net/latest/win32-x64-
 $VSCodeExecutableName = "Code"
 
 # Install VSCode without launching it immediately
-Install-Executable -InstallerUrl $VSCodeInstallerUrl -ExecutableName $VSCodeExecutableName -RunNow:$false
+# Install-Executable -InstallerUrl $VSCodeInstallerUrl -ExecutableName $VSCodeExecutableName -RunNow:$false
 
