@@ -107,17 +107,17 @@ $CustomRegistryPath = "HKLM:\Software\Policies\Microsoft\Windows\DataCollection"
 $CustomValueName = "AllowTelemetry"
 Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
 
-# Disable Cortana
-
-$CustomRegistryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search"
-$CustomValueName = "AllowCortana"
-Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
-
 # Disable Feedback & Diagnostics
 
 $CustomRegistryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection"
 $CustomValueName = "DoNotUseDiagnosticData"
 Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 1
+
+# Disable Cortana
+
+$CustomRegistryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search"
+$CustomValueName = "AllowCortana"
+Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
 
 # Disable Advertising ID
 
@@ -151,8 +151,8 @@ Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName 
 
 # Remove weather Icon
 
-$CustomRegistryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Dsh\AllowNewsAndInterests"
-$CustomValueName = "TaskbarMn"
+$CustomRegistryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Dsh"
+$CustomValueName = "AllowNewsAndInterests"
 Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
 
 # Remove widgets
@@ -173,21 +173,9 @@ $CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSet
 $CustomValueName = "IsDynamicSearchBoxEnabled"
 Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
 
-# Install Brave without launching it immediately
-# Install-Executable -InstallerUrl "https://laptop-updates.brave.com/latest/winx64" -ExecutableName "brave" -RunNow:$false
 
-# Define the URL for the Firefox installer
-$FirefoxInstallerUrl = "https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US"
+# Turn off Powershell 2.0
 
-# Install Firefox without launching it immediately
-# Install-Executable -InstallerUrl $FirefoxInstallerUrl -ExecutableName "firefox" -RunNow:$false
-
-# Define the URL for the VSCode installer (adjust the URL as needed)
-$VSCodeInstallerUrl = "https://vscode-update.azurewebsites.net/latest/win32-x64-user/stable"
-
-# Specify the desired executable name
-$VSCodeExecutableName = "Code"
-
-# Install VSCode without launching it immediately
-# Install-Executable -InstallerUrl $VSCodeInstallerUrl -ExecutableName $VSCodeExecutableName -RunNow:$false
-
+$CustomRegistryPath = "HKLM:\SOFTWARE\Microsoft\PowerShell\1\PowerShellEngine"
+$CustomValueName = "PowerShellVersion"
+Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData "2.0"
