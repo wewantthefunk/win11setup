@@ -160,7 +160,7 @@ function Make-Updates {
 
     # Set the system sound profile to "No Sound"
     $CustomRegistryPath = "HKCU:\AppEvents\Schemes"
-    $CustomValueName = ".Default"
+    $CustomValueName = "(Default)"
     Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData ".None"
 }
 
