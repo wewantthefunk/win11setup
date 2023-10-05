@@ -3,6 +3,7 @@ powershell.exe -ExecutionPolicy Bypass -File "win11setup.ps1"
 
 rem restart the computer
 
+echo You need to restart the computer for some of the updates to take effect.
 echo Do you want to restart the computer? (Y/N)
 choice /c yn /n /m "Press Y for Yes, N for No: "
 

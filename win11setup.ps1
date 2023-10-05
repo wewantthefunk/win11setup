@@ -1,5 +1,24 @@
 # win 11 setup
 
+#Define function to disable windows service
+
+function Disable-WindowsService {
+    param (
+        [string]$ServiceName
+    )
+
+    # Check if the service exists
+    if (Get-Service -Name $ServiceName -ErrorAction SilentlyContinue) {
+        # Disable the service
+        Set-Service -Name $ServiceName -StartupType Disabled
+
+        Write-Host "The '$ServiceName' service has been disabled."
+    } else {
+        Write-Host "The '$ServiceName' service was not found."
+    }
+}
+
+
 # Define a function to set a registry value
 function Set-RegistryValue {
     param (
@@ -18,10 +37,6 @@ function Set-RegistryValue {
 
     # Inform the user that the change has been made
     Write-Host "Registry value '$ValueName' set to $ValueData at '$RegistryPath'."
-
-    # Restart the explorer process to apply the changes
-    Stop-Process -Name explorer -Force
-    Start-Process explorer
 }
 
 function Set-RegistryValueString {
@@ -41,43 +56,27 @@ function Set-RegistryValueString {
 
     # Inform the user that the change has been made
     Write-Host "Registry value '$ValueName' set to $ValueData at '$RegistryPath'."
-
-    # Restart the explorer process to apply the changes
-    Stop-Process -Name explorer -Force
-    Start-Process explorer
 }
 
-function Install-Executable {
-    param (
-        [string]$InstallerUrl,
-        [string]$ExecutableName,
-        [switch]$RunNow
-    )
+function Remove-DesktopIcons {
+    # Define the path to the Desktop folder
+    $desktopPath = [System.Environment]::GetFolderPath("Desktop")
 
-    # Check if the application is already installed
-    $appInstalled = Get-WmiObject -Query "SELECT * FROM Win32_Product WHERE Name = '$ExecutableName'" -ErrorAction SilentlyContinue
+    # Get all items (files and shortcuts) in the Desktop folder
+    $desktopItems = Get-ChildItem -Path $desktopPath
 
-    if ($appInstalled) {
-        Write-Host "$ExecutableName is already installed."
-    }
-    else {
-        Write-Host "Installing $ExecutableName..."
-        # Define the path where you want to save the installer
-        $InstallerPath = "$env:TEMP\$ExecutableName.exe"
+    # Loop through each item and remove it
+    foreach ($item in $desktopItems) {
+        if ($item.PSIsContainer) {
+            # Skip directories (subfolders) on the desktop
+            continue
+        }
 
-        # Download the Brave installer
-        Invoke-WebRequest -Uri $InstallerUrl -OutFile $InstallerPath
-
-        # Install Brave silently
-        Start-Process -FilePath $InstallerPath -ArgumentList "/silent /install" -Wait
-
-        # Remove the installer after installation
-        Remove-Item -Path $InstallerPath -Force
+        # Remove the item (file or shortcut)
+        Remove-Item -Path $item.FullName -Force
     }
 
-    if ($RunNow -and $appInstalled -eq $null) {
-        Start-Process "$env:ProgramFiles\BraveSoftware\$ExecutableName\Application\$ExecutableName.exe"
-    }
+    Write-Host "All icons have been removed from the desktop."
 }
 
 function Unpin-AllTaskbarItems {
@@ -88,9 +87,6 @@ function Unpin-AllTaskbarItems {
 }
 
 function Make-Updates {
-    # Remove all pinned items from taskbar
-    Unpin-AllTaskbarItems
-
     # Move the start menu to the left
     $CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     $CustomValueName = "TaskbarAl"
@@ -172,7 +168,6 @@ function Make-Updates {
     $CustomValueName = "IsDynamicSearchBoxEnabled"
     Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
 
-reg
     # Turn off Powershell 2.0
 
     $CustomRegistryPath = "HKLM:\SOFTWARE\Microsoft\PowerShell\1\PowerShellEngine"
@@ -180,8 +175,6 @@ reg
     Set-RegistryValueString -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData "2.0"
 
     # Set Sound Scheme to "No Sound"
-
-    # Set the system sound profile to "No Sound"
 
     # Define the registry path for the sound scheme settings
     $soundSchemeRegistryPath = "HKCU:\AppEvents\Schemes\Apps\.Default"
@@ -197,6 +190,46 @@ reg
     $CustomRegistryPath = "HKCU:\AppEvents\Schemes"
     $CustomValueName = "(Default)"
     Set-RegistryValueString -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData ".None"
+
+    #Disable Services
+
+    Disable-WindowsService -ServiceName "AJRouter"
+    Disable-WindowsService -ServiceName "AssignedAccessManagerSvc"
+    Disable-WindowsService -ServiceName "BDESVC"
+    Disable-WindowsService -ServiceName "DiagTrack"
+    Disable-WindowsService -ServiceName "DoSvc"
+    Disable-WindowsService -ServiceName "diagsvc"
+    Disable-WindowsService -ServiceName "DPS"
+    Disable-WindowsService -ServiceName "WdiServiceHost"
+    Disable-WindowsService -ServiceName "WdiSystemHost"
+    Disable-WindowsService -ServiceName "lfsvc"
+    Disable-WindowsService -ServiceName "Netlogon"
+    Disable-WindowsService -ServiceName "defragsvc"
+    Disable-WindowsService -ServiceName "WpcMonSvc"
+    Disable-WindowsService -ServiceName "PhoneSvc"
+    Disable-WindowsService -ServiceName "SessionEnv"
+    Disable-WindowsService -ServiceName "TermService"
+    Disable-WindowsService -ServiceName "UmRdpService"
+    Disable-WindowsService -ServiceName "SensorService"
+    Disable-WindowsService -ServiceName "SCardSvr"
+    Disable-WindowsService -ServiceName "ScDeviceEnum"
+    Disable-WindowsService -ServiceName "SCPolicySvc"
+    Disable-WindowsService -ServiceName "WbioSrvc"
+    Disable-WindowsService -ServiceName "WerSvc"
+    Disable-WindowsService -ServiceName "workfolderssvc"
+    Disable-WindowsService -ServiceName "XboxGipSvc"
+    Disable-WindowsService -ServiceName "XblAuthManager"
+    Disable-WindowsService -ServiceName "XblGameSave"
+    Disable-WindowsService -ServiceName "XboxNetApiSvc"
+    Disable-WindowsService -ServiceName "SQLWriter"
+    Disable-WindowsService -ServiceName "WSearch"
+    Disable-WindowsService -ServiceName "WinRM"
+
+    # Remove all Desktop Icons
+    Remove-DesktopIcons
+
+    # Remove all pinned items from taskbar
+    Unpin-AllTaskbarItems
 }
 
 Make-Updates
