@@ -24,6 +24,29 @@ function Set-RegistryValue {
     Start-Process explorer
 }
 
+function Set-RegistryValueString {
+    param (
+        [string]$RegistryPath,
+        [string]$ValueName,
+        [string]$ValueData
+    )
+    
+    # Check if the registry key exists; if not, create it
+    if (-not (Test-Path -Path $RegistryPath)) {
+        New-Item -Path $RegistryPath -Force
+    }
+    
+    # Set the specified DWORD value in the registry
+    Set-ItemProperty -Path $RegistryPath -Name $ValueName -Value $ValueData
+
+    # Inform the user that the change has been made
+    Write-Host "Registry value '$ValueName' set to $ValueData at '$RegistryPath'."
+
+    # Restart the explorer process to apply the changes
+    Stop-Process -Name explorer -Force
+    Start-Process explorer
+}
+
 function Install-Executable {
     param (
         [string]$InstallerUrl,
@@ -154,14 +177,14 @@ function Make-Updates {
 
     $CustomRegistryPath = "HKLM:\SOFTWARE\Microsoft\PowerShell\1\PowerShellEngine"
     $CustomValueName = "PowerShellVersion"
-    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData "2.0"
+    Set-RegistryValueString -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData "2.0"
 
     # Set Sound Scheme to "No Sound"
 
     # Set the system sound profile to "No Sound"
     $CustomRegistryPath = "HKCU:\AppEvents\Schemes"
     $CustomValueName = "@"
-    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData ".None"
+    Set-RegistryValueString -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData ".None"
 }
 
 Make-Updates
