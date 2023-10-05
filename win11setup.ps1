@@ -191,7 +191,7 @@ reg
     $eventSounds | ForEach-Object {
         $eventPath = $_.PSChildName
         Set-ItemProperty -Path "$soundSchemeRegistryPath\$eventPath" -Name "(Default)" -Value ".None"
-        Set-ItemProperty -Path "$soundSchemeRegistryPath\$eventPath\.Currnet" -Name "(Default)" -Value ""
+        Set-ItemProperty -Path "$soundSchemeRegistryPath\$eventPath\.Current" -Name "(Default)" -Value ""
     }
 
     $CustomRegistryPath = "HKCU:\AppEvents\Schemes"
