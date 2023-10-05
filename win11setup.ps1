@@ -182,6 +182,17 @@ function Make-Updates {
     # Set Sound Scheme to "No Sound"
 
     # Set the system sound profile to "No Sound"
+
+    # Define the registry path for the sound scheme settings
+    $soundSchemeRegistryPath = "HKCU:\AppEvents\Schemes\Apps\.Default"
+
+    # Disable all system sounds by setting "(None)" for all events
+    $eventSounds = Get-Item -Path "$soundSchemeRegistryPath\*"
+    $eventSounds | ForEach-Object {
+        $eventPath = $_.PSChildName
+        Set-ItemProperty -Path "$soundSchemeRegistryPath\$eventPath" -Name "(Default)" -Value "(None)"
+    }
+
     $CustomRegistryPath = "HKCU:\AppEvents\Schemes"
     $CustomValueName = "(Default)"
     Set-RegistryValueString -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData ".None"
