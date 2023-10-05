@@ -164,18 +164,5 @@ function Make-Updates {
     Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData "No Sound"
 }
 
-# Get the current date and time as a formatted string
-$dateTime = Get-Date -Format "yyyyMMddHHmmss"
-
-# Create a system restore point with a timestamp in the description
-$restorePointDescription = "Restore Point $dateTime"
-Checkpoint-Computer -Description $restorePointDescription -RestorePointType "MODIFY_SETTINGS"
-
-# Verify if the restore point was created
-if ($?) {
-    Write-Host "System restore point '$restorePointDescription' created successfully."
-    Make-Updates
-} else {
-    Write-Host "Failed to create a system restore point. Updates Aborted"
-}
+Make-Updates
 
