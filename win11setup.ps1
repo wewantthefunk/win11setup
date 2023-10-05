@@ -172,7 +172,7 @@ function Make-Updates {
     $CustomValueName = "IsDynamicSearchBoxEnabled"
     Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
 
-
+reg
     # Turn off Powershell 2.0
 
     $CustomRegistryPath = "HKLM:\SOFTWARE\Microsoft\PowerShell\1\PowerShellEngine"
@@ -190,7 +190,8 @@ function Make-Updates {
     $eventSounds = Get-Item -Path "$soundSchemeRegistryPath\*"
     $eventSounds | ForEach-Object {
         $eventPath = $_.PSChildName
-        Set-ItemProperty -Path "$soundSchemeRegistryPath\$eventPath" -Name "(Default)" -Value "(None)"
+        Set-ItemProperty -Path "$soundSchemeRegistryPath\$eventPath" -Name "(Default)" -Value ".None"
+        Set-ItemProperty -Path "$soundSchemeRegistryPath\$eventPath\.Currnet" -Name "(Default)" -Value ""
     }
 
     $CustomRegistryPath = "HKCU:\AppEvents\Schemes"
