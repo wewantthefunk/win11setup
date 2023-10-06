@@ -186,6 +186,12 @@ function Make-Updates {
     $CustomValueName = "ShowRecentList"
     Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 1
 
+    # Turn off sticky keys
+
+    $CustomRegistryPath = "HKCU:\Control Panel\Accessibility\StickyKeys"
+    $CustomValueName = "Flags"
+    Set-RegistryValueString -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData "506"
+
     # Turn off Powershell 2.0
 
     $CustomRegistryPath = "HKLM:\SOFTWARE\Microsoft\PowerShell\1\PowerShellEngine"
