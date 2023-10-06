@@ -168,6 +168,24 @@ function Make-Updates {
     $CustomValueName = "IsDynamicSearchBoxEnabled"
     Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
 
+    # Bring back Windows 10 start
+
+    $CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    $CustomValueName = "Start_ShowClassicMode"
+    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 1
+
+    # Turn off FrequentList
+
+    $CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Start"
+    $CustomValueName = "ShowFrequentList"
+    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 1
+
+    # Bring back Windows 10 start
+
+    $CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Start"
+    $CustomValueName = "ShowRecentList"
+    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 1
+
     # Turn off Powershell 2.0
 
     $CustomRegistryPath = "HKLM:\SOFTWARE\Microsoft\PowerShell\1\PowerShellEngine"
@@ -230,6 +248,9 @@ function Make-Updates {
 
     # Remove all pinned items from taskbar
     Unpin-AllTaskbarItems
+
+    Stop-Process -Name explorer -Force
+    Start-Process explorer
 }
 
 Make-Updates
