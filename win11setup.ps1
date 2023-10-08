@@ -186,6 +186,18 @@ function Make-Updates {
     $CustomValueName = "ShowRecentList"
     Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 1
 
+    # Remove Bing from Search Results
+
+    $CustomRegistryPath = "HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer"
+    $CustomValueName = "DisableSearchBoxSuggestions"
+    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 1
+
+    # Restore Context Menu
+
+    $CustomRegistryPath = "HKCU:\SOFTWARE\CLASSES\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InProcServer32"
+    $CustomValueName = "(Default)"
+    Set-RegistryValueString -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData ""
+
     # Turn off sticky keys
 
     $CustomRegistryPath = "HKCU:\Control Panel\Accessibility\StickyKeys"
@@ -197,6 +209,12 @@ function Make-Updates {
     $CustomRegistryPath = "HKLM:\SOFTWARE\Microsoft\PowerShell\1\PowerShellEngine"
     $CustomValueName = "PowerShellVersion"
     Set-RegistryValueString -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData "2.0"
+
+    # Windows 10 File Explorer
+
+    $CustomRegistryPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"
+    $CustomValueName = "{e2bf9676-5f8f-435c-97eb-11607a5bedf7}"
+    Set-RegistryValueString -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData ""
 
     # Set Sound Scheme to "No Sound"
 
