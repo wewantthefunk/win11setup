@@ -289,6 +289,12 @@ function Make-Updates {
     $CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager"
     $CustomValueName = "SystemPaneSuggestionsEnabled"
     Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
+
+    # Hide all Desktop Icons
+
+    $CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+    $CustomValueName = "NoDesktop"
+    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 1
     
     # Windows 10 File Explorer
 
