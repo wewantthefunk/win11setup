@@ -226,6 +226,28 @@ function Make-Updates {
     $CustomValueName = "UploadUserActivities"
     Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
 
+    # Turn off Inking and Typing Personalization/Customization
+
+    $CustomRegistryPath = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\CPSS\Store\InkingAndTypingPersonalization"
+    $CustomValueName = "Value"
+    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
+
+    $CustomRegistryPath = "HKCU:\SOFTWARE\Microsoft\Personalization\Settings"
+    $CustomValueName = "AcceptedPrivacyPolicy"
+    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
+
+    $CustomRegistryPath = "HKCU:\SOFTWARE\Microsoft\InputPersonalization"
+    $CustomValueName = "RestrictImplicitInkCollection"
+    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 1
+
+    $CustomRegistryPath = "HKCU:\SOFTWARE\Microsoft\InputPersonalization"
+    $CustomValueName = "RestrictImplicitTextCollection"
+    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 1
+
+    $CustomRegistryPath = "HKCU:\SOFTWARE\Microsoft\InputPersonalization\TrainedDataStore"
+    $CustomValueName = "HarvestContacts"
+    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 1
+
     # Turn off Subscribed Content
 
     $CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager"
