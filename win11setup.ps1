@@ -216,6 +216,16 @@ function Make-Updates {
     $CustomValueName = "DisableStartupSound"
     Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
 
+    # Turn off Activity History
+
+    $CustomRegistryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System"
+    $CustomValueName = "PublishUserActivities"
+    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
+
+    $CustomRegistryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System"
+    $CustomValueName = "UploadUserActivities"
+    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
+
     # Turn off Subscribed Content
 
     $CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager"
