@@ -248,10 +248,15 @@ function Make-Updates {
     $CustomValueName = "HarvestContacts"
     Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 1
 
-    # Turn of Show Recommended apps, tips, etc.
+    # Turn off Copilot
+    $CustomRegistryPath = "HKCU:\Software\Policies\Microsoft\Windows\WindowsCopilot"
+    $CustomValueName = "TurnOffWindowsCopilot"
+    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 1
+
+    # Turn off Show Recommended apps, tips, etc.
     $CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     $CustomValueName = "Start_IrisRecommendations"
-    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 1
+    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
 
     # Turn off Subscribed Content
 
