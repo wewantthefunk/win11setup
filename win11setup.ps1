@@ -79,14 +79,14 @@ function Remove-DesktopIcons {
     Write-Host "All icons have been removed from the desktop."
 }
 
-function Unpin-AllTaskbarItems {
+function Edit-Unpin-AllTaskbarItems {
     Remove-Item -Path "$env:APPDATA\Microsoft\Internet Explorer\Quick Launch\User Pinned\Taskbar\*" -Force -Recurse
     Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\TaskBand" -Name '*' -Force
 
     Write-Host "All pinned items have been removed from the taskbar."
 }
 
-function Make-Updates {
+function Edit-Make-Updates {
     # Move the start menu to the left
     $CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     $CustomValueName = "TaskbarAl"
@@ -395,15 +395,22 @@ function Make-Updates {
     Disable-WindowsService -ServiceName "WSearch"
     Disable-WindowsService -ServiceName "WinRM"
 
+    # Remove Windows Components
+    Get-AppxPackage Microsoft.YourPhone -AllUsers | Remove-AppxPackage
+    Get-AppxPackage -PackageTypeFilter Bundle -Name "*Microsoft.XboxGamingOverlay*" | Remove-AppxPackage
+    Get-AppxPackage -PackageTypeFilter Bundle -Name "*Microsoft.GetHelp*" | Remove-AppxPackage 
+    Get-AppxPackage -AllUsers -PackageTypeFilter Bundle -Name "*Windows.DevHome*" | Remove-AppxPackage -AllUsers
+    Get-AppxPackage -AllUsers *crossdevice* | Remove-AppxPackage
+
     # Remove all Desktop Icons
     Remove-DesktopIcons
 
     # Remove all pinned items from taskbar
-    Unpin-AllTaskbarItems
+    Edit-Unpin-AllTaskbarItems
 
     Stop-Process -Name explorer -Force
     Start-Process explorer
 }
 
-Make-Updates
+Edit-Make-Updates
 
