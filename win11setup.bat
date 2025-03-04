@@ -1,6 +1,10 @@
 @echo off
 powershell.exe -ExecutionPolicy Bypass -File "win11setup.ps1"
 
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart 
+
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+
 rem restart the computer
 
 echo You need to restart the computer for some of the updates to take effect.

@@ -87,6 +87,11 @@ function Edit-Unpin-AllTaskbarItems {
 }
 
 function Edit-Make-Updates {
+    # Remove Task View from Taskbar
+    $CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    $CustomValueName = "ShowTaskViewButton"
+    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
+
     # Move the start menu to the left
     $CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     $CustomValueName = "TaskbarAl"
