@@ -87,6 +87,11 @@ function Edit-Unpin-AllTaskbarItems {
 }
 
 function Edit-Make-Updates {
+    # Remove Window Snapping When Dragging Windows Around
+    $CustomRegistryPath = "HKCU:\Control Panel\Desktop"
+    $CustomValueName = "WindowArrangementActive"
+    Set-RegistryValue -RegistryPath $CustomRegistryPath -ValueName $CustomValueName -ValueData 0
+    
     # Remove Task View from Taskbar
     $CustomRegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     $CustomValueName = "ShowTaskViewButton"
